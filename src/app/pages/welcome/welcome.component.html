@@ -1,0 +1,76 @@
+<div class="flex items-center justify-center h-screen w-screen bg-gray-100 p-4 overflow-hidden">
+  <div class="w-full h-full max-w-6xl max-h-[95vh] shadow-xl overflow-hidden bg-white rounded-xl">
+    <div class="p-6 flex flex-col h-full">
+      <!-- Header -->
+      <div class="flex flex-col items-center mb-6">
+        <img
+          [src]="logoUrl()"
+          alt="Logo"
+          width="120"
+          height="auto"
+          loading="lazy"
+        />
+        <h1 class="text-[20px] font-bold text-gray-800 mb-2">
+          Welcome to {{ appName() }}!
+        </h1>
+        <p class="text-gray-600 text-center">{{ message() }}</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+        <input
+          type="text"
+          placeholder="Search Name"
+          class="input border border-gray-300 p-1 rounded"
+          [(ngModel)]="name"
+          (ngModelChange)="onFilterChange()"
+        />
+        <input
+          type="number"
+          placeholder="Min Price"
+          class="input border border-gray-300 p-1 rounded"
+          [(ngModel)]="minPrice"
+          (ngModelChange)="onFilterChange()"
+        />
+        <input
+          type="number"
+          placeholder="Max Price"
+          class="input border border-gray-300 p-1 rounded"
+          [(ngModel)]="maxPrice"
+          (ngModelChange)="onFilterChange()"
+        />
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-auto rounded border border-gray-200 flex-grow">
+        <table class="table-auto w-full">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="px-4 py-2 text-left">SL</th>
+              <th class="px-4 py-2 text-left">Name</th>
+              <th class="px-4 py-2 text-left">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="loading()">
+              <td colspan="3" class="text-center py-6">
+                <span class="spinner"></span>
+                Loading products...
+              </td>
+            </tr>
+            <tr *ngIf="!loading() && products().length === 0">
+              <td colspan="3" class="text-center py-6">No product found</td>
+            </tr>
+            <ng-container *ngIf="!loading() && products().length > 0">
+              <tr  class="hover:bg-gray-100" *ngFor="let product of products(); let i = index">
+                <td class="px-4 py-2 border-b-1 border-gray-300">{{ i + 1 }}</td>
+                <td class="px-4 py-2 border-b-1 border-gray-300">{{ product.name }}</td>
+                <td class="px-4 py-2 border-b-1 border-gray-300">${{ product.price | number: '1.2-2' }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
